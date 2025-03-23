@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class NewBehaviourScript : MonoBehaviour
 {
+    [SerializeField] private MobileJoystick playerJoystick;
+    [SerializeField] private float moveSpeed;
     private Rigidbody2D rig;
 
     // Start is called before the first frame update
@@ -12,10 +14,8 @@ public class NewBehaviourScript : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         rig.velocity = Vector2.right;
     }
-
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        rig.velocity = playerJoystick.GetMoveVector() * moveSpeed * Time.deltaTime;
     }
 }
