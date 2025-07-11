@@ -21,13 +21,27 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Enemy closestEnemy = null;
+        AutoAim();
+    }
+    private void AutoAim()
+    {
+        Enemy closestEnemy = GetClosetEnemy();
         Vector2 targetUpVector = Vector3.up;
+        if(closestEnemy != null)
+        {
+            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
+        }
+        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
+    }
+    private Enemy GetClosetEnemy()
+    { 
+        Enemy closestEnemy = null;
+  
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyMask);
         if (enemies.Length <= 0)
-        {
-            transform.up = Vector3.up; return;
-        }
+        
+            return null;
+        
         float minDistance = range;
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -42,18 +56,12 @@ public class Weapon : MonoBehaviour
                     minDistance = distanceToEnemy;
                 }
             }
+
         }
-        // 使用 == 进行比较
-        if (closestEnemy == null)
-        {
-            transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-            //transform. up = targetUpVector;
-            return;
-        }
-        targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
+        return closestEnemy; 
     }
-        
+    
+
     private void OnDrawGizmosSelected()
     {
         Gizmos. color = Color. magenta;
