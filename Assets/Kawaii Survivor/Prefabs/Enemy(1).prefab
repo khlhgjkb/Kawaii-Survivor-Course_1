@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f50420853beec9499211f8f56df1559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 20
+  healthText: {fileID: 0}
   renderer: {fileID: 3833717783948826919}
   spawnIndicator: {fileID: 2607952832246696044}
   passAwayParticles: {fileID: 6701561746593129623}

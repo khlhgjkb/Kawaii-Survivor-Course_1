@@ -3,50 +3,199 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using NaughtyAttributes;
 
 public class Weapon : MonoBehaviour
 {
+    enum State
+    {
+        Idle,
+        Attack
+    }
+    private State state;
+
+    // ÃÌº”π•ª˜ƒ£ Ω√∂æŸ
+    public enum AttackMode
+    {
+        Auto,
+        Manual
+    }
+
+    [Header("Attack Mode")]
+    [SerializeField] private AttackMode currentAttackMode = AttackMode.Auto;
+    [SerializeField] private float manualAttackCooldown = 0.5f;
+    private float lastManualAttackTime;
+
+    [Header("Elements")]
+    [SerializeField] private Transform hitDetectionTransform;
+    [SerializeField] private float hitDetectionRadius;
+
     [Header(" Settings ")]
     [SerializeField] private float range;
-    [SerializeField] private LayerMask enemyMask; 
+    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private float attackDelay;
 
     [Header(" Animations ")]
     [SerializeField] private float aimLerp;
-    // Start is called before the first frame update
+    private float attackTimer;
+    private List<All_Enemy> damageadEnemies = new List<All_Enemy>();
+
+
+    [Header("Attack")]
+    [SerializeField] private int damage;
+    [SerializeField] private Animator animator;
+
     void Start()
     {
-
-
+        state = State.Idle;
     }
-    // Update is called once per frame
+
     void Update()
     {
-        AutoAim();
+        AutoAim(); // À˘”–ƒ£ Ω∂º–Ë“™◊‘∂Ø√È◊º
+
+        // ∏˘æ›µ±«∞π•ª˜ƒ£ Ω÷¥––≤ªÕ¨¬ﬂº≠
+        switch (currentAttackMode)
+        {
+            case AttackMode.Auto:
+                AutoAttackLogic();
+                break;
+
+            case AttackMode.Manual:
+                ManualAttackLogic();
+                break;
+        }
     }
+
+    private void AutoAttackLogic()
+    {
+        // ◊‘∂Øπ•ª˜◊¥Ã¨¥¶¿Ì
+        switch (state)
+        {
+            case State.Idle:
+                // ‘⁄AutoAim÷–¥¶¿Ì◊‘∂Øπ•ª˜
+                break;
+
+            case State.Attack:
+                Attacking();
+                break;
+        }
+    }
+
+    private void ManualAttackLogic()
+    {
+        //  ÷∂Øπ•ª˜ ‰»ÎºÏ≤‚
+        if (Input.GetMouseButtonDown(0)) //  Û±Í◊Ûº¸
+        {
+            if (Time.time - lastManualAttackTime >= manualAttackCooldown)
+            {
+                StartAttack();
+                lastManualAttackTime = Time.time;
+            }
+        }
+
+        // π•ª˜◊¥Ã¨¥¶¿Ì
+        if (state == State.Attack)
+        {
+            Attacking();
+        }
+    }
+
+    // ‘⁄Inspector÷–«–ªªπ•ª˜ƒ£ Ωµƒ∞¥≈•
+    [Button("«–ªªπ•ª˜ƒ£ Ω")]
+    private void ToggleAttackMode()
+    {
+        currentAttackMode = (currentAttackMode == AttackMode.Auto) ?
+                            AttackMode.Manual : AttackMode.Auto;
+
+        Debug.Log($"π•ª˜ƒ£ Ω“—«–ªªŒ™: {currentAttackMode}");
+    }
+
     private void AutoAim()
     {
         Enemy closestEnemy = GetClosetEnemy();
         Vector2 targetUpVector = Vector3.up;
-        if(closestEnemy != null)
+
+        if (closestEnemy != null)
         {
+            // ÷ª‘⁄◊‘∂Øƒ£ Ωœ¬π‹¿Ì◊‘∂Øπ•ª˜
+            if (currentAttackMode == AttackMode.Auto)
+            {
+                ManageAttack();
+            }
+
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
         }
+
         transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
     }
+
+    private void ManageAttack()
+    {
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0;
+            StartAttack();
+        }
+    }
+
+    private void IncreamentAttackTimer()
+    {
+        attackTimer += Time.deltaTime;
+    }
+
+    private void StartAttack()
+    {
+        animator.Play("Attack");
+        state = State.Attack;
+        animator.speed = 1f / attackDelay;
+        damageadEnemies.Clear();
+    }
+
+    private void Attacking()
+    {
+        Attack();
+    }
+
+    private void StopAttack()
+    {
+        state = State.Idle;
+        damageadEnemies.Clear();
+    }
+
+    private void Attack()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(
+            hitDetectionTransform.position,
+            hitDetectionRadius,
+            enemyMask
+        );
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            All_Enemy enemy = enemies[i].GetComponent<All_Enemy>();
+            if (enemy == null) continue;
+
+            if (!damageadEnemies.Contains(enemy))
+            {
+                enemy.TakeDamage(damage);
+                damageadEnemies.Add(enemy);
+            }
+        }
+    }
+
     private Enemy GetClosetEnemy()
-    { 
+    {
         Enemy closestEnemy = null;
-  
+
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyMask);
         if (enemies.Length <= 0)
-        
             return null;
-        
+
         float minDistance = range;
         for (int i = 0; i < enemies.Length; i++)
         {
             Enemy enemyChecked = enemies[i].GetComponent<Enemy>();
-            // Ê£ÄÊü•Ëé∑ÂèñÁöÑÁªÑ‰ª∂ÊòØÂê¶‰∏∫ null
             if (enemyChecked != null)
             {
                 float distanceToEnemy = Vector2.Distance(transform.position, enemyChecked.transform.position);
@@ -56,16 +205,16 @@ public class Weapon : MonoBehaviour
                     minDistance = distanceToEnemy;
                 }
             }
-
         }
-        return closestEnemy; 
+        return closestEnemy;
     }
-    
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos. color = Color. magenta;
-        Gizmos. DrawWireSphere(transform. position, range);
-    
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, range);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(hitDetectionTransform.position, hitDetectionRadius);
     }
 }

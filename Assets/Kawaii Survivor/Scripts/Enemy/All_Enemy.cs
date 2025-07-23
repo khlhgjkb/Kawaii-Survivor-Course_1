@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 [RequireComponent(typeof(Enemy))]
 public class All_Enemy : MonoBehaviour
 {
     [Header("Compoents")]
     private Enemy movement;
-
+    [Header("Health")]
+    [SerializeField] private int maxHealth;
+    private int health;
+    [SerializeField] private TextMeshPro healthText;
     [Header("Elements")]
     private Player player;
 
@@ -31,6 +35,8 @@ public class All_Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = maxHealth;
+        healthText.text = health.ToString();
         movement = GetComponent<Enemy>();
 
         player = FindFirstObjectByType<Player>();
@@ -81,7 +87,7 @@ public class All_Enemy : MonoBehaviour
         movement.StorePlayer(player);
     }
 
-    private void SetRenderesVisibility(bool visibility=true)
+    private void SetRenderesVisibility(bool visibility = true)
     {
         //隐藏渲染器
         renderer.enabled = visibility;
@@ -104,9 +110,10 @@ public class All_Enemy : MonoBehaviour
 
     private void TryAttack()
     {
-        float distanceToplayert = Vector2.Distance(transform.position, player.transform.position);
+        if (player == null) return;
 
-        if (distanceToplayert <= playerDetectionRadius)
+        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        if (distanceToPlayer <= playerDetectionRadius)
         {
             Attack();
         }
@@ -119,10 +126,17 @@ public class All_Enemy : MonoBehaviour
 
         player.TakeDamage(damage);
     }
-
+    public void TakeDamage(int damage)
+    {
+        int realDamage = Mathf.Min(damage, health);
+        health -= realDamage;
+        healthText.text = health.ToString();
+        if (health <= 0)
+            PassAway();
+        
+    }
     private void PassAway()
     {
-        //解除粒子效果的父对象关系并播放
         passAwayParticles.transform.SetParent(null);
         passAwayParticles.Play();
         Destroy(gameObject);
@@ -135,5 +149,7 @@ public class All_Enemy : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
+
     }
 }
+
