@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DamageText : MonoBehaviour
 {
     // Start is called before the first frame update
     [Header("Elements")]
     [SerializeField] private Animator animator;
+    [SerializeField] private TextMeshPro damageText;
     void Start()
     {
         
@@ -18,8 +20,9 @@ public class DamageText : MonoBehaviour
         
     }
     [NaughtyAttributes.Button]
-    private void Animate()
+    public void Animate(int damage)
     {
+        damageText.text = damage.ToString();
         animator.Play("Animate");
     }
 }

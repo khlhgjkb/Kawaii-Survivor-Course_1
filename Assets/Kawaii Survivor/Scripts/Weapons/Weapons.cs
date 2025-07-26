@@ -23,6 +23,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Attack Mode")]
     [SerializeField] private AttackMode currentAttackMode = AttackMode.Auto;
+    [SerializeField] private BoxCollider2D hitCollider;
     [SerializeField] private float manualAttackCooldown = 0.5f;
     private float lastManualAttackTime;
 
@@ -165,11 +166,7 @@ public class Weapon : MonoBehaviour
 
     private void Attack()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(
-            hitDetectionTransform.position,
-            hitDetectionRadius,
-            enemyMask
-        );
+        Collider2D[] enemies = Physics2D.OverlapBoxAll(hitDetectionTransform.position,hitCollider.bounds.size,hitDetectionTransform.localEulerAngles.z,enemyMask);
 
         for (int i = 0; i < enemies.Length; i++)
         {

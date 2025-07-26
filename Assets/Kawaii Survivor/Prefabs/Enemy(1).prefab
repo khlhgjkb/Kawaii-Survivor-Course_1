@@ -152,11 +152,12 @@ MonoBehaviour:
   healthText: {fileID: 0}
   renderer: {fileID: 3833717783948826919}
   spawnIndicator: {fileID: 2607952832246696044}
+  collider: {fileID: 9198538799653221742}
   passAwayParticles: {fileID: 6701561746593129623}
   damage: 1
   attackFrequency: 1
   playerDetectionRadius: 1
-  gizmos: 0
+  gizmos: 1
 --- !u!58 &9198538799653221742
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -164,7 +165,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486219736267531864}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}

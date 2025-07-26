@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 [RequireComponent(typeof(Enemy))]
 public class All_Enemy : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class All_Enemy : MonoBehaviour
     [Header("Spwn Sequence Related")]
     [SerializeField] private SpriteRenderer renderer;
     [SerializeField] private SpriteRenderer spawnIndicator;
+    [SerializeField] private Collider2D collider;
     private bool hasSpawned;
 
     [Header("Effects")]
@@ -29,6 +31,8 @@ public class All_Enemy : MonoBehaviour
     private float attackDelay;
     private float attackTimer;
 
+    [Header("Actions")]
+    public static Action<int ,Vector2> onDamageTaken;
     [Header("DEBUG")]
     [SerializeField] private bool gizmos;
 
@@ -36,7 +40,10 @@ public class All_Enemy : MonoBehaviour
     void Start()
     {
         health = maxHealth;
-        healthText.text = health.ToString();
+        if (healthText != null)
+        {
+            healthText.text = health.ToString();
+        }
         movement = GetComponent<Enemy>();
 
         player = FindFirstObjectByType<Player>();
@@ -83,7 +90,7 @@ public class All_Enemy : MonoBehaviour
     {
         SetRenderesVisibility();
         hasSpawned = true;
-
+        collider.enabled = true;
         movement.StorePlayer(player);
     }
 
@@ -130,10 +137,14 @@ public class All_Enemy : MonoBehaviour
     {
         int realDamage = Mathf.Min(damage, health);
         health -= realDamage;
-        healthText.text = health.ToString();
+        onDamageTaken?.Invoke(damage,transform.position);
+        if (healthText != null)
+        {
+            healthText.text = health.ToString();
+        }
         if (health <= 0)
             PassAway();
-        
+
     }
     private void PassAway()
     {
@@ -152,4 +163,3 @@ public class All_Enemy : MonoBehaviour
 
     }
 }
-
