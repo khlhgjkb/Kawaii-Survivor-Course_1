@@ -95,9 +95,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2922883669340484944}
-  - component: {fileID: 1911751275065169609}
   - component: {fileID: 5208580377846422253}
   - component: {fileID: 9198538799653221742}
+  - component: {fileID: 6154146276776722088}
   m_Layer: 6
   m_Name: Enemy(1)
   m_TagString: Untagged
@@ -123,19 +123,6 @@ Transform:
   - {fileID: 2280667508051504691}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1911751275065169609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1486219736267531864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f74628712fef35843a8d13b76cd2e222, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
 --- !u!114 &5208580377846422253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,16 +135,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f50420853beec9499211f8f56df1559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  healthText: {fileID: 0}
+  maxHealth: 30
   renderer: {fileID: 3833717783948826919}
   spawnIndicator: {fileID: 2607952832246696044}
   collider: {fileID: 9198538799653221742}
   passAwayParticles: {fileID: 6701561746593129623}
+  playerDetectionRadius: 0.5
+  showGizmos: 1
   damage: 1
   attackFrequency: 1
-  playerDetectionRadius: 1
-  gizmos: 1
 --- !u!58 &9198538799653221742
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -165,7 +151,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486219736267531864}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -194,6 +180,20 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.037988693, y: 0.35139513}
   m_Radius: 0.41452527
+--- !u!114 &6154146276776722088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486219736267531864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6833f0d9a2d6b0249bb2bff042c30c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  stoppingDistance: 1
 --- !u!1 &4532847949608377708
 GameObject:
   m_ObjectHideFlags: 0
@@ -5095,7 +5095,7 @@ GameObject:
   - component: {fileID: 7762918535869390511}
   - component: {fileID: 3833717783948826919}
   m_Layer: 6
-  m_Name: Enemy Renderer (1)
+  m_Name: 'Enemy Renderer '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5158,7 +5158,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2c779ee9bb7c5564cbe70ac40533e83a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

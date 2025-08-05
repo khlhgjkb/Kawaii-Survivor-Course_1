@@ -11,11 +11,11 @@ public class DamageTextManger : MonoBehaviour
     private ObjectPool<DamageText> damageTextPool;
     private void Awake()
     {
-        All_Enemy.onDamageTaken += EnemyHitFallback;
+        MeleeEnemy.onDamageTaken += EnemyHitFallback;
     }
     private void OnDestory()
     {
-        All_Enemy.onDamageTaken += EnemyHitFallback;
+        MeleeEnemy.onDamageTaken += EnemyHitFallback;
     }
     // Start is called before the first frame update
     void Start()
