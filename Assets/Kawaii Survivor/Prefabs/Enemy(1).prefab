@@ -140,7 +140,7 @@ MonoBehaviour:
   spawnIndicator: {fileID: 2607952832246696044}
   collider: {fileID: 9198538799653221742}
   passAwayParticles: {fileID: 6701561746593129623}
-  playerDetectionRadius: 0.5
+  playerDetectionRadius: 0
   showGizmos: 1
   damage: 1
   attackFrequency: 1
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  stoppingDistance: 1
+  stoppingDistance: 0
 --- !u!1 &4532847949608377708
 GameObject:
   m_ObjectHideFlags: 0

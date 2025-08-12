@@ -246,10 +246,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4055992779270457228, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1265,7 +1261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77637f837ee5f141aabd6fe9109b38a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 114514
+  maxHealth: 10
   healthSlider: {fileID: 1064808844}
   healthText: {fileID: 727925832}
 --- !u!1 &542812195
@@ -1932,6 +1928,14 @@ PrefabInstance:
     - target: {fileID: 4055992779270457228, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208580377846422253, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
+      propertyPath: attackFrequency
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208580377846422253, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
+      propertyPath: playerDetectionRadius
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2613,6 +2617,14 @@ PrefabInstance:
     - target: {fileID: 4055992779270457228, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208580377846422253, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
+      propertyPath: attackFrequency
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5208580377846422253, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
+      propertyPath: playerDetectionRadius
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21262,6 +21274,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5208580377846422253, guid: 8a0ac2872d77e8e42908e9642e5b622b, type: 3}
+      propertyPath: attackFrequency
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21376,10 +21392,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 1483804505}
     m_Modifications:
     - target: {fileID: 5247279131889080783, guid: 481bcc11625cf4b488074c7c77ba8f02, type: 3}
-      propertyPath: m_LocalScale.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5247279131889080783, guid: 481bcc11625cf4b488074c7c77ba8f02, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.27
       objectReference: {fileID: 0}
@@ -21418,14 +21430,6 @@ PrefabInstance:
     - target: {fileID: 5247279131889080783, guid: 481bcc11625cf4b488074c7c77ba8f02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304064223082360098, guid: 481bcc11625cf4b488074c7c77ba8f02, type: 3}
-      propertyPath: bulletDamage
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304064223082360098, guid: 481bcc11625cf4b488074c7c77ba8f02, type: 3}
-      propertyPath: bulletLifetime
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8746346824957546991, guid: 481bcc11625cf4b488074c7c77ba8f02, type: 3}
       propertyPath: m_Name

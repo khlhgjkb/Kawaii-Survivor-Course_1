@@ -34,6 +34,11 @@ public abstract class AllEnemy : MonoBehaviour
         health = maxHealth;
         movement = GetComponent<Enemy_moment>();
 
+        // 确保所有关键状态重置
+        hasSpawned = false;
+        collider.enabled = false;
+        SetRenderersVisibility(false);
+
         // 延迟查找玩家
         StartCoroutine(FindPlayerCoroutine());
         StartSpawnSequence();

@@ -5123,7 +5123,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -13.56, y: 0.8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4394559648398793264}
@@ -5165,7 +5165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootingPoint: {fileID: 1370336198477316360}
   bulletPrefab: {fileID: 8966293610539445343, guid: 129746d12848b4c419d474f1d53c5544, type: 3}
-  bulletDamage: 10
+  bulletDamage: 1
   attackFrequency: 2
   bulletSpeed: 10
 --- !u!58 &776996464623143193
