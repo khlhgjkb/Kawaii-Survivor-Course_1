@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Enemy_moment : MonoBehaviour
@@ -10,14 +9,44 @@ public class Enemy_moment : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float stoppingDistance = 1f;
 
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackResistance = 0.5f;
+
     private Player player;
     private bool shouldMove = false;
+    private bool isKnockbackActive = false;
+    private Vector2 knockbackVelocity;
+    private float knockbackDuration;
+    private float knockbackTimer;
+    private Vector2 originalPosition; // 用于存储击退前的目标位置
 
     void Update()
     {
-        if (shouldMove && player != null)
+        if (isKnockbackActive)
+        {
+            HandleKnockback();
+        }
+        else if (shouldMove && player != null)
         {
             MoveTowardsPlayer();
+        }
+    }
+
+    private void HandleKnockback()
+    {
+        knockbackTimer += Time.deltaTime;
+
+        if (knockbackTimer >= knockbackDuration)
+        {
+            // 击退结束，恢复移动
+            isKnockbackActive = false;
+            shouldMove = true; // 确保移动被重新启用
+        }
+        else
+        {
+            // 应用击退速度（随时间衰减）
+            float decay = 1f - (knockbackTimer / knockbackDuration);
+            transform.position += (Vector3)knockbackVelocity * decay * Time.deltaTime;
         }
     }
 
@@ -29,11 +58,33 @@ public class Enemy_moment : MonoBehaviour
     public void FollowPlayer()
     {
         shouldMove = true;
+        isKnockbackActive = false; // 确保击退状态被重置
     }
 
     public void StopMovement()
     {
         shouldMove = false;
+    }
+
+    // 添加击退方法
+    public void ApplyKnockback(Vector2 direction, float force, float duration)
+    {
+        // 考虑击退抗性
+        float effectiveForce = force * (1f - knockbackResistance);
+
+        knockbackVelocity = direction.normalized * effectiveForce;
+        knockbackDuration = duration;
+        knockbackTimer = 0f;
+        isKnockbackActive = true;
+
+        // 临时停止移动，但会在击退结束后自动恢复
+        shouldMove = false;
+
+        // 存储当前位置，以便击退后恢复移动
+        if (player != null)
+        {
+            originalPosition = player.transform.position;
+        }
     }
 
     private void MoveTowardsPlayer()
@@ -63,6 +114,11 @@ public class Enemy_moment : MonoBehaviour
     // 调试方法
     public bool IsMoving()
     {
-        return shouldMove;
+        return shouldMove && !isKnockbackActive;
+    }
+
+    public bool IsKnockbackActive()
+    {
+        return isKnockbackActive;
     }
 }
